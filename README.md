@@ -4,7 +4,6 @@
 ## 🌐 Live Demo
 👉 [Click here to view Live Demo](https://ayus758.github.io/Smart-Travel-Planner/)
 
-![Demo Preview](screenshot.png)
 ```
 
 ## 🚀 Overview
