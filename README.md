@@ -1,13 +1,11 @@
 # 🌍 Smart Tourist Decision Support System
 
 ### Real-Time Travel Intelligence & Cost Optimization Platform
-[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge)](https://ayus758.github.io/Smart-Travel-Planner/)
-```
+## 🌐 Live Demo
+👉 [Click here to view Live Demo](https://ayus758.github.io/Smart-Travel-Planner/)
 
-It renders as a clickable green badge like this:
+![Demo Preview](screenshot.png)
 ```
-[ Live Demo ] ← green button in README
----
 
 ## 🚀 Overview
 
