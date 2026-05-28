@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SmartTrip — Intelligent Travel Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <div class="logo">SmartTrip</div>
+      <ul class="nav-links">
+        <li><a href="#search-section">Plan</a></li>
+        <li><a href="#cost-section">Cost</a></li>
+        <li><a href="#weather-section">Weather</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-tag">Powered by Dijkstra's Algorithm</p>
+        <h1 class="hero-title">Plan your trip,<br/><em>intelligently.</em></h1>
+        <p class="hero-sub">Real-time routes, cost estimates, weather insights — all in one place.</p>
+      </div>
+
+      <!-- SEARCH CARD -->
+      <div class="search-card" id="search-section">
+        <div class="search-grid">
+          <div class="input-group">
+            <label>From</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2"/></svg>
+              </span>
+              <input type="text" id="fromInput" placeholder="Delhi" list="cityList" autocomplete="off"/>
+            </div>
+          </div>
+
+          <button class="swap-btn" onclick="swapCities()" title="Swap cities">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 16V4m0 0L3 8m4-4l4 4M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          </button>
+
+          <div class="input-group">
+            <label>To</label>
+            <div class="input-wrap">
+              <span class="input-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              </span>
+              <input type="text" id="toInput" placeholder="Mussoorie" list="cityList" autocomplete="off"/>
+            </div>
+          </div>
+        </div>
+
+        <div class="mode-chips">
+          <span class="chip active" data-mode="all">All</span>
+          <span class="chip" data-mode="flight">✈ Flight</span>
+          <span class="chip" data-mode="bus">🚌 Bus</span>
+          <span class="chip" data-mode="train">🚂 Train</span>
+          <span class="chip" data-mode="drive">🚗 Drive</span>
+        </div>
+
+        <button class="search-btn" id="searchBtn" onclick="triggerSearch()">
+          <span id="searchBtnText">Find Routes</span>
+          <span id="searchBtnLoader" class="btn-loader hidden">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </span>
+        </button>
+
+        <!-- ERROR MESSAGE -->
+        <div class="error-msg hidden" id="errorMsg"></div>
+
+        <!-- RESULTS -->
+        <div class="results-section hidden" id="resultsSection">
+          <div class="results-header">
+            <span id="resultsLabel">Routes</span>
+            <span class="results-algo">Dijkstra's Algorithm</span>
+          </div>
+
+          <div class="route-cards" id="routeCards"></div>
+
+          <!-- ALTERNATIVES -->
+          <div class="alts-section" id="altsSection">
+            <p class="alts-label">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              Nearby alternatives in same region
+            </p>
+            <div class="alts-chips" id="altsChips"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST SECTION -->
+  <section class="section cost-section" id="cost-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-tag">Budget Planning</p>
+        <h2 class="section-title">Estimate your <em>trip cost</em></h2>
+        <p class="section-sub">Greedy algorithm-powered cost breakdown in seconds.</p>
+      </div>
+
+      <div class="cost-card">
+        <div class="cost-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label>From City</label>
+              <input type="text" id="costFrom" list="cityList" placeholder="e.g. Delhi" autocomplete="off"/>
+            </div>
+            <div class="form-group">
+              <label>To City</label>
+              <input type="text" id="costTo" list="cityList" placeholder="e.g. Manali" autocomplete="off"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Travel Mode</label>
+              <select id="travelMode">
+                <option value="Bus">🚌 Bus</option>
+                <option value="Train">🚂 Train</option>
+                <option value="Flight">✈ Flight</option>
+                <option value="Car">🚗 Car</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Number of Days</label>
+              <input type="number" id="tripDays" value="3" min="1" max="30"/>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Hotel Type</label>
+              <select id="hotelType">
+                <option value="Budget">Budget (₹800/night)</option>
+                <option value="Mid-Range">Mid-Range (₹2000/night)</option>
+                <option value="Luxury">Luxury (₹6000/night)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Travelers</label>
+              <input type="number" id="travelers" value="2" min="1" max="20"/>
+            </div>
+          </div>
+          <button class="calc-btn" id="calcBtn" onclick="calculateCost()">
+            <span id="calcBtnText">Calculate Cost</span>
+            <span id="calcBtnLoader" class="btn-loader hidden">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="spin"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+            </span>
+          </button>
+        </div>
+
+        <div class="cost-error hidden" id="costError"></div>
+
+        <div class="cost-result hidden" id="costResult">
+          <div class="cost-breakdown">
+            <div class="cost-item">
+              <span class="cost-item-icon">🚌</span>
+              <span class="cost-item-label">Travel</span>
+              <span class="cost-item-val" id="travelCost">₹0</span>
+            </div>
+            <div class="cost-divider"></div>
+            <div class="cost-item">
+              <span class="cost-item-icon">🏨</span>
+              <span class="cost-item-label">Hotels</span>
+              <span class="cost-item-val" id="hotelCost">₹0</span>
+            </div>
+            <div class="cost-divider"></div>
+            <div class="cost-item">
+              <span class="cost-item-icon">🍽️</span>
+              <span class="cost-item-label">Food & Misc</span>
+              <span class="cost-item-val" id="foodCost">₹0</span>
+            </div>
+          </div>
+          <div class="cost-total">
+            <div>
+              <p class="cost-total-label">Total per person</p>
+              <p class="cost-algo-note">✓ Greedy-optimized estimate</p>
+            </div>
+            <p class="cost-total-val" id="totalCost">₹0</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WEATHER SECTION -->
+  <section class="section weather-section" id="weather-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-tag">Live Conditions</p>
+        <h2 class="section-title">Weather at <em>top destinations</em></h2>
+        <p class="section-sub">Live data from OpenWeatherMap API.</p>
+      </div>
+
+      <div class="weather-grid" id="weatherGrid">
+        <!-- Filled by JS -->
+        <div class="weather-loading">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="spin"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          Loading weather data...
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALGORITHMS SECTION -->
+  <section class="section algo-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <p class="section-tag">Under the Hood</p>
+        <h2 class="section-title">Powered by <em>smart algorithms</em></h2>
+      </div>
+      <div class="algo-grid">
+        <div class="algo-card">
+          <span class="algo-icon">🔷</span>
+          <p class="algo-name">Dijkstra's</p>
+          <code>O((V+E) log V)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">💡</span>
+          <p class="algo-name">Greedy</p>
+          <code>O(n log n)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">📊</span>
+          <p class="algo-name">Merge Sort</p>
+          <code>O(n log n)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">🔍</span>
+          <p class="algo-name">Binary Search</p>
+          <code>O(log n)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">🌐</span>
+          <p class="algo-name">BFS</p>
+          <code>O(V + E)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">🕸️</span>
+          <p class="algo-name">DFS</p>
+          <code>O(V + E)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">🏔️</span>
+          <p class="algo-name">Heap Sort</p>
+          <code>O(n log n)</code>
+        </div>
+        <div class="algo-card">
+          <span class="algo-icon">🎒</span>
+          <p class="algo-name">0/1 Knapsack</p>
+          <code>O(n × W)</code>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <p class="footer-logo">SmartTrip</p>
+      <p class="footer-copy">© 2025 Smart Tourist Decision Support System</p>
+      <p class="footer-note">Built with Dijkstra's Algorithm & ♥</p>
+    </div>
+  </footer>
+
+  <!-- DATALIST -->
+  <datalist id="cityList">
+    <option>Delhi</option><option>Agra</option><option>Mathura</option>
+    <option>Vrindavan</option><option>Lucknow</option><option>Varanasi</option>
+    <option>Allahabad</option><option>Ayodhya</option><option>Kanpur</option>
+    <option>Amritsar</option><option>Chandigarh</option><option>Ludhiana</option>
+    <option>Jammu</option><option>Haridwar</option><option>Rishikesh</option>
+    <option>Dehradun</option><option>Mussoorie</option><option>Nainital</option>
+    <option>Shimla</option><option>Manali</option><option>Dharamshala</option>
+    <option>Jaipur</option><option>Udaipur</option><option>Jodhpur</option>
+    <option>Jaisalmer</option><option>Bikaner</option><option>Ajmer</option>
+    <option>Pushkar</option><option>Mount Abu</option><option>Bhopal</option>
+    <option>Indore</option><option>Gwalior</option><option>Jhansi</option>
+    <option>Khajuraho</option><option>Orchha</option><option>Ujjain</option>
+    <option>Ahmedabad</option><option>Vadodara</option><option>Surat</option>
+    <option>Rajkot</option><option>Dwarka</option><option>Somnath</option>
+    <option>Mumbai</option><option>Pune</option><option>Nashik</option>
+    <option>Aurangabad</option><option>Nagpur</option><option>Lonavala</option>
+    <option>Mahabaleshwar</option><option>Shirdi</option><option>Panaji</option>
+    <option>Bangalore</option><option>Mysore</option><option>Hampi</option>
+    <option>Mangalore</option><option>Chikmagalur</option><option>Coorg</option>
+    <option>Kochi</option><option>Munnar</option><option>Alleppey</option>
+    <option>Trivandrum</option><option>Kozhikode</option><option>Thekkady</option>
+    <option>Wayanad</option><option>Varkala</option><option>Chennai</option>
+    <option>Madurai</option><option>Ooty</option><option>Coimbatore</option>
+    <option>Pondicherry</option><option>Kodaikanal</option><option>Rameswaram</option>
+    <option>Kanyakumari</option><option>Mahabalipuram</option><option>Tirupati</option>
+    <option>Hyderabad</option><option>Visakhapatnam</option><option>Bhubaneswar</option>
+    <option>Puri</option><option>Kolkata</option><option>Darjeeling</option>
+    <option>Siliguri</option><option>Gangtok</option><option>Patna</option>
+    <option>Gaya</option><option>Bodhgaya</option><option>Ranchi</option>
+    <option>Guwahati</option><option>Shillong</option><option>Cherrapunji</option>
+    <option>Srinagar</option><option>Leh</option><option>Gulmarg</option><option>Pahalgam</option>
+  </datalist>
+
+  <script src="script.js"></script>
+</body>
+</html>
