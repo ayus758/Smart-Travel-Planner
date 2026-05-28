@@ -1,7 +1,6 @@
 # 🌍 Smart Tourist Decision Support System
 
 ### Real-Time Travel Intelligence & Cost Optimization Platform
-## 🌐 Run Locally
 
 ```
 
@@ -22,7 +21,6 @@ Tourists often face difficulties such as:
 * ❌ Uncertain travel costs
 * ❌ Lack of real-time environmental data
 * ❌ Confusion between multiple travel routes
-* ❌ Overcrowded destinations
 * ❌ No integrated decision-making system
 
 Existing solutions fail to combine **all critical travel parameters into a single intelligent system**.
@@ -47,13 +45,6 @@ This system provides a **centralized intelligent platform** where users can:
 
 * Displays current weather conditions
 * Helps users decide whether the trip is feasible
-
----
-
-### 👥 Crowd Density Monitoring
-
-* Shows how crowded a location is
-* Helps avoid overcrowded places
 
 ---
 
@@ -199,14 +190,12 @@ This project strongly integrates **Design and Analysis of Algorithms (DAA)** con
 
 ### Algorithms
 
-* Implemented using C++ / JavaScript
+* Implemented using JavaScript
 
 ### APIs (Optional)
 
 * Weather API
 * Maps API
-* Hotel data API
-
 ---
 
 ## 📊 Time Complexity
