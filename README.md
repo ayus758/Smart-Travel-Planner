@@ -1,8 +1,7 @@
 # 🌍 Smart Tourist Decision Support System
 
 ### Real-Time Travel Intelligence & Cost Optimization Platform
-## 🌐 Live Demo
-👉 [Click here to view Live Demo](https://ayus758.github.io/Smart-Travel-Planner/)
+## 🌐 Run Locally
 
 ```
 
